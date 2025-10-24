@@ -1,70 +1,187 @@
-# Getting Started with Create React App
+# GramInfo Dashboard 1.0
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive MGNREGA (Mahatma Gandhi National Rural Employment Guarantee Act) District Dashboard built for the Build For Bharat Fellowship 2026 Cohort.
 
-## Available Scripts
+## 🎯 Project Overview
 
-In the project directory, you can run:
+GramInfo is a modern, responsive web application that provides citizens, government officials, and researchers with real-time insights into MGNREGA performance across different districts in India. The dashboard promotes transparency and accountability in one of India's most important social welfare programs.
+
+## ✨ Key Features
+
+### 🌐 Multi-Language Support
+
+- **English** - Complete interface in English
+- **हिंदी (Hindi)** - Full Hindi translation for Hindi-speaking regions
+- **मराठी (Marathi)** - Complete Marathi translation for Maharashtra
+
+### 📊 Data Visualization
+
+- **Interactive Charts** - Monthly performance trends using Recharts
+- **Key Metrics Cards** - Person-days, expenditure, households, and wage rates
+- **Responsive Design** - Works seamlessly across all devices
+
+### 🗺️ Location-Based Analytics
+
+- **State & District Selection** - Easy dropdown selection
+- **District-Specific Data** - Unique metrics for each location
+- **Geographic Coverage** - Major states including Madhya Pradesh, Maharashtra, and Gujarat
+
+### 📈 Performance Insights
+
+- **Monthly Trends** - Visual representation of person-days and expenditure
+- **Key Highlights** - Important statistics and achievements
+- **Summary Reports** - Comprehensive district-wise summaries
+
+## 🛠️ Technology Stack
+
+- **Frontend Framework**: React 18.2.0
+- **Styling**: Tailwind CSS 3.3.3
+- **Charts**: Recharts 3.3.0
+- **Icons**: Lucide React 0.548.0
+- **Build Tool**: Create React App
+- **PostCSS**: Autoprefixer for cross-browser compatibility
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (version 14 or higher)
+- npm or yarn package manager
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd graminfo-dashboard1.0
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+
+   ```bash
+   npm start
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📱 Available Scripts
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Runs the app in development mode. The page will reload when you make changes.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Builds the app for production to the `build` folder. Optimized for best performance.
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Note: This is a one-way operation!** Ejects from Create React App for full control over configuration.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🏗️ Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+src/
+├── App.js              # Main application component
+├── App.css             # Application styles
+├── index.js            # Application entry point
+├── index.css           # Global styles with Tailwind imports
+└── components/         # Reusable components (if any)
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🎨 Design Features
 
-## Learn More
+- **Government Theme**: Professional green and blue color scheme
+- **Responsive Layout**: Mobile-first design approach
+- **Accessibility**: WCAG compliant interface
+- **Modern UI**: Clean, intuitive user experience
+- **Loading States**: Smooth loading animations
+- **Error Handling**: Comprehensive error management
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📊 Data Sources
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Currently uses simulated data for demonstration purposes. In production, the dashboard would integrate with:
 
-### Code Splitting
+- **Data.gov.in Open API** - Official government data portal
+- **MGNREGA Official APIs** - Real-time program data
+- **Server-side Integration** - Required due to CORS restrictions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🌟 Key Components
 
-### Analyzing the Bundle Size
+### DistrictSelector
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- State and district dropdown selection
+- Responsive grid layout
+- Form validation
 
-### Making a Progressive Web App
+### StatCard
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Metric display with icons
+- Trend indicators
+- Hover effects
 
-### Advanced Configuration
+### ChartView
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Interactive bar charts
+- Monthly trend visualization
+- Responsive container
 
-### Deployment
+### SummaryBanner
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Comprehensive data summary
+- Location-specific insights
+- Action-oriented information
 
-### `npm run build` fails to minify
+## 🔧 Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Tailwind CSS
+
+The project uses Tailwind CSS for styling. Configuration is available in `tailwind.config.js`.
+
+### PostCSS
+
+PostCSS configuration is set up in `postcss.config.js` for CSS processing.
+
+## 🚀 Deployment
+
+The application is ready for deployment on various platforms:
+
+- **Vercel** - Recommended for React applications
+- **Netlify** - Easy deployment with continuous integration
+- **AWS S3 + CloudFront** - Scalable hosting solution
+- **GitHub Pages** - Free hosting for public repositories
+
+## 🤝 Contributing
+
+This project is part of the Build For Bharat Fellowship 2026 Cohort. For contributions or questions, please contact the development team.
+
+## 📄 License
+
+This project is developed for educational and social impact purposes as part of the Build For Bharat Fellowship program.
+
+## 👥 Team
+
+**Build For Bharat Fellowship - 2026 Cohort (Engineering)**  
+**MVP By Aryan Chauhan**
+
+## 🔗 Links
+
+- [MGNREGA Official Website](https://nrega.nic.in)
+- [Data.gov.in](https://data.gov.in)
+- [Build For Bharat Fellowship](https://buildforbharat.org)
+
+---
+
+_Empowering citizens with transparent MGNREGA data through technology_
