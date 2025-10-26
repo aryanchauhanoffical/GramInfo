@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Users, DollarSign, Briefcase, TrendingUp, AlertCircle, Loader, Globe, Info } from 'lucide-react';
 import dataGovService from './api/dataGovService';
@@ -399,6 +399,34 @@ const App = () => {
     initializeAPI();
   }, []);
 
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    
+    try {
+      // Fetch real data from Data.gov.in API
+      const districtData = await dataGovService.fetchMGNREGAData(selectedState, selectedDistrict);
+      setData(districtData);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      setError(`Unable to load data: ${err.message}`);
+      
+      // Fallback to mock data if API fails
+      try {
+        console.log('Falling back to mock data...');
+        const mockData = generateDistrictData(selectedState, selectedDistrict);
+        setData(mockData);
+        setError('Using simulated data - API temporarily unavailable');
+      } catch (mockErr) {
+        console.error('Mock data generation failed:', mockErr);
+        setError('Unable to load any data. Please try again later.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedState, selectedDistrict]);
+
   // Load districts when state changes
   useEffect(() => {
     const loadDistricts = async () => {
@@ -427,35 +455,7 @@ const App = () => {
     if (selectedState && selectedDistrict) {
       fetchData();
     }
-  }, [selectedState, selectedDistrict]);
-
-  const fetchData = async () => {
-    setLoading(true);
-    setError('');
-    
-    try {
-      // Fetch real data from Data.gov.in API
-      const districtData = await dataGovService.fetchMGNREGAData(selectedState, selectedDistrict);
-      setData(districtData);
-      setError('');
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      setError(`Unable to load data: ${err.message}`);
-      
-      // Fallback to mock data if API fails
-      try {
-        console.log('Falling back to mock data...');
-        const mockData = generateDistrictData(selectedState, selectedDistrict);
-        setData(mockData);
-        setError('Using simulated data - API temporarily unavailable');
-      } catch (mockErr) {
-        console.error('Mock data generation failed:', mockErr);
-        setError('Unable to load any data. Please try again later.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [selectedState, selectedDistrict, fetchData]);
 
   const generateDistrictData = (state, district) => {
     const seed = (state + district).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);

@@ -449,4 +449,5 @@ class DataGovService {
 }
 
 // Export singleton instance
-export default new DataGovService();
+const dataGovServiceInstance = new DataGovService();
+export default dataGovServiceInstance;
