@@ -1,187 +1,175 @@
-# GramInfo Dashboard 1.0
+# GramInfo - MGNREGA District Dashboard
 
-A comprehensive MGNREGA (Mahatma Gandhi National Rural Employment Guarantee Act) District Dashboard built for the Build For Bharat Fellowship 2026 Cohort.
+A comprehensive dashboard for tracking MGNREGA (Mahatma Gandhi National Rural Employment Guarantee Act) performance across Indian districts with real-time data from Data.gov.in API.
 
-## 🎯 Project Overview
+## 🚀 Features
 
-GramInfo is a modern, responsive web application that provides citizens, government officials, and researchers with real-time insights into MGNREGA performance across different districts in India. The dashboard promotes transparency and accountability in one of India's most important social welfare programs.
-
-## ✨ Key Features
+### 📊 Real-Time Data Integration
+- **Live API Integration**: Fetches real MGNREGA data from Data.gov.in
+- **33+ States**: Complete coverage of Indian states
+- **1000+ Districts**: Dynamic district loading based on selected state
+- **Real MGNREGA Metrics**: Person-days, expenditure, households, wage rates
 
 ### 🌐 Multi-Language Support
+- **English**: Full interface in English
+- **Hindi**: Complete Hindi translation (हिंदी)
+- **Marathi**: Full Marathi translation (मराठी)
 
-- **English** - Complete interface in English
-- **हिंदी (Hindi)** - Full Hindi translation for Hindi-speaking regions
-- **मराठी (Marathi)** - Complete Marathi translation for Maharashtra
+### 📱 Modern UI/UX
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Government Theme**: Professional green and blue color scheme
+- **Interactive Charts**: Monthly performance trends with Recharts
+- **Live Data Indicators**: Shows when using real vs demo data
+- **Loading States**: Smooth loading animations
+- **Error Handling**: Comprehensive error management with fallbacks
 
-### 📊 Data Visualization
+### 🔧 Technical Features
+- **API Fallback**: Gracefully falls back to simulated data if API fails
+- **Timeout Management**: 30-second timeout with retry mechanisms
+- **Field Mapping**: Intelligent mapping of API fields to dashboard metrics
+- **Performance Optimized**: Efficient data loading and processing
 
-- **Interactive Charts** - Monthly performance trends using Recharts
-- **Key Metrics Cards** - Person-days, expenditure, households, and wage rates
-- **Responsive Design** - Works seamlessly across all devices
+## 🛠️ Tech Stack
 
-### 🗺️ Location-Based Analytics
-
-- **State & District Selection** - Easy dropdown selection
-- **District-Specific Data** - Unique metrics for each location
-- **Geographic Coverage** - Major states including Madhya Pradesh, Maharashtra, and Gujarat
-
-### 📈 Performance Insights
-
-- **Monthly Trends** - Visual representation of person-days and expenditure
-- **Key Highlights** - Important statistics and achievements
-- **Summary Reports** - Comprehensive district-wise summaries
-
-## 🛠️ Technology Stack
-
-- **Frontend Framework**: React 18.2.0
-- **Styling**: Tailwind CSS 3.3.3
+- **Frontend**: React 18.2.0
+- **Styling**: Tailwind CSS 4.1.16
 - **Charts**: Recharts 3.3.0
 - **Icons**: Lucide React 0.548.0
-- **Build Tool**: Create React App
-- **PostCSS**: Autoprefixer for cross-browser compatibility
+- **HTTP Client**: Axios 1.12.2
+- **Build Tool**: React Scripts 5.0.1
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js (version 14 or higher)
-- npm or yarn package manager
-
-### Installation
+## 📦 Installation
 
 1. **Clone the repository**
-
    ```bash
-   git clone <repository-url>
-   cd graminfo-dashboard1.0
+   git clone https://github.com/aryanchauhanoffical/GramInfo.git
+   cd GramInfo
    ```
 
 2. **Install dependencies**
-
    ```bash
    npm install
    ```
 
 3. **Start the development server**
-
    ```bash
    npm start
    ```
 
 4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📱 Available Scripts
+## 🌐 API Integration
 
-### `npm start`
+### Data.gov.in API
+- **API Key**: `579b464db66ec23bdd00000135805e57744d44fc7e6da9d67141fa4f`
+- **Resource ID**: `ee03643a-ee4c-48c2-ac30-9f2ff26ab722`
+- **Dataset**: District-wise MGNREGA Data at a Glance
+- **Format**: JSON with real-time updates
 
-Runs the app in development mode. The page will reload when you make changes.
-
-### `npm test`
-
-Launches the test runner in interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder. Optimized for best performance.
-
-### `npm run eject`
-
-**Note: This is a one-way operation!** Ejects from Create React App for full control over configuration.
-
-## 🏗️ Project Structure
-
+### API Endpoints
 ```
-src/
-├── App.js              # Main application component
-├── App.css             # Application styles
-├── index.js            # Application entry point
-├── index.css           # Global styles with Tailwind imports
-└── components/         # Reusable components (if any)
+https://api.data.gov.in/resource/ee03643a-ee4c-48c2-ac30-9f2ff26ab722?api-key=YOUR_API_KEY&format=json&limit=500
 ```
 
-## 🎨 Design Features
+### Data Fields Mapped
+- **Person Days**: `Persondays_of_Central_Liability_so_far`
+- **Expenditure**: `Total_Exp` (in lakhs)
+- **Households**: `Total_Households_Worked`
+- **Wage Rate**: `Average_Wage_rate_per_day_per_person`
 
-- **Government Theme**: Professional green and blue color scheme
-- **Responsive Layout**: Mobile-first design approach
-- **Accessibility**: WCAG compliant interface
-- **Modern UI**: Clean, intuitive user experience
-- **Loading States**: Smooth loading animations
-- **Error Handling**: Comprehensive error management
+## 📊 Dashboard Components
 
-## 📊 Data Sources
+### State & District Selector
+- Dynamic loading of states from API
+- District dropdown populated based on selected state
+- Real-time data indicators
 
-Currently uses simulated data for demonstration purposes. In production, the dashboard would integrate with:
+### Key Metrics Cards
+- **Person-Days Generated**: Employment days created
+- **Total Expenditure**: Government spending in lakhs
+- **Households Worked**: Number of beneficiary households
+- **Wage Rate**: Daily wage rate per person
 
-- **Data.gov.in Open API** - Official government data portal
-- **MGNREGA Official APIs** - Real-time program data
-- **Server-side Integration** - Required due to CORS restrictions
+### Monthly Performance Chart
+- Interactive bar chart showing monthly trends
+- Person-days and expenditure visualization
+- Responsive design for all screen sizes
 
-## 🌟 Key Components
-
-### DistrictSelector
-
-- State and district dropdown selection
-- Responsive grid layout
-- Form validation
-
-### StatCard
-
-- Metric display with icons
-- Trend indicators
-- Hover effects
-
-### ChartView
-
-- Interactive bar charts
-- Monthly trend visualization
-- Responsive container
-
-### SummaryBanner
-
+### Summary Banner
 - Comprehensive data summary
 - Location-specific insights
-- Action-oriented information
+- Government contact information
 
 ## 🔧 Configuration
 
-### Tailwind CSS
+### API Service (`src/api/dataGovService.js`)
+- Configurable API endpoints
+- Timeout and retry settings
+- Field mapping for different data sources
+- Error handling and fallback mechanisms
 
-The project uses Tailwind CSS for styling. Configuration is available in `tailwind.config.js`.
-
-### PostCSS
-
-PostCSS configuration is set up in `postcss.config.js` for CSS processing.
+### Language Support
+- Translation files in `src/App.js`
+- Easy to add new languages
+- Consistent terminology across all languages
 
 ## 🚀 Deployment
 
-The application is ready for deployment on various platforms:
+### Build for Production
+```bash
+npm run build
+```
 
-- **Vercel** - Recommended for React applications
-- **Netlify** - Easy deployment with continuous integration
-- **AWS S3 + CloudFront** - Scalable hosting solution
-- **GitHub Pages** - Free hosting for public repositories
+### Deploy to GitHub Pages
+```bash
+npm install -g gh-pages
+npm run build
+npm run deploy
+```
+
+### Deploy to Netlify/Vercel
+1. Connect your GitHub repository
+2. Set build command: `npm run build`
+3. Set publish directory: `build`
+4. Deploy automatically on push
+
+## 📈 Performance
+
+- **Fast Loading**: Optimized API calls with smaller data limits
+- **Caching**: Efficient data caching and state management
+- **Responsive**: Works seamlessly across all devices
+- **Accessibility**: WCAG compliant interface
 
 ## 🤝 Contributing
 
-This project is part of the Build For Bharat Fellowship 2026 Cohort. For contributions or questions, please contact the development team.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 License
+## 📝 License
 
-This project is developed for educational and social impact purposes as part of the Build For Bharat Fellowship program.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Team
+## 👨‍💻 Author
 
-**Build For Bharat Fellowship - 2026 Cohort (Engineering)**  
-**MVP By Aryan Chauhan**
+**Aryan Chauhan**
+- GitHub: [@aryanchauhanoffical](https://github.com/aryanchauhanoffical)
+- Project: Build For Bharat Fellowship - 2026 Cohort (Engineering)
 
-## 🔗 Links
+## 🙏 Acknowledgments
 
-- [MGNREGA Official Website](https://nrega.nic.in)
-- [Data.gov.in](https://data.gov.in)
-- [Build For Bharat Fellowship](https://buildforbharat.org)
+- **Data.gov.in**: For providing the MGNREGA dataset API
+- **Build For Bharat**: For the fellowship program
+- **React Community**: For the amazing ecosystem
+- **Tailwind CSS**: For the utility-first CSS framework
+
+## 📞 Support
+
+For support, email aryanchauhanoffical@gmail.com or create an issue in the repository.
 
 ---
 
-_Empowering citizens with transparent MGNREGA data through technology_
+**Made with ❤️ for India's rural development through transparent MGNREGA data access.**
