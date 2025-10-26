@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Users, DollarSign, Briefcase, TrendingUp, AlertCircle, Loader, Globe, Info } from 'lucide-react';
+import dataGovService from './api/dataGovService';
 
 // Language translations
 const translations = {
@@ -36,7 +37,7 @@ const translations = {
     footer: "Build For Bharat Fellowship - 2026 Cohort (Engineering)",
     footerSubtext: "MVP By Aryan Chauhan",
     note: "Note:",
-    noteText: "This is a demonstration dashboard showing simulated MGNREGA data. In production, data would be fetched from Data.gov.in Open API. The government API requires server-side integration due to CORS restrictions."
+    noteText: "This dashboard now integrates with Data.gov.in Open API for real MGNREGA data. When API is unavailable, simulated data is used as fallback. Data is fetched in real-time from government sources."
   },
   hi: {
     title: "ग्रामइन्फो",
@@ -70,7 +71,7 @@ const translations = {
     footer: "Build For Bharat Fellowship - 2026 Cohort (Engineering)",
     footerSubtext: "MVP By Aryan Chauhan",
     note: "नोट:",
-    noteText: "यह एक प्रदर्शन डैशबोर्ड है जो सिम्युलेटेड मनरेगा डेटा दिखाता है। उत्पादन में, डेटा Data.gov.in ओपन एपीआई से प्राप्त किया जाएगा। सरकारी एपीआई को CORS प्रतिबंधों के कारण सर्वर-साइड एकीकरण की आवश्यकता है।"
+    noteText: "यह डैशबोर्ड अब वास्तविक मनरेगा डेटा के लिए Data.gov.in ओपन एपीआई के साथ एकीकृत है। जब एपीआई अनुपलब्ध होता है, तो सिम्युलेटेड डेटा का उपयोग फॉलबैक के रूप में किया जाता है। डेटा सरकारी स्रोतों से वास्तविक समय में प्राप्त किया जाता है।"
   },
   mr: {
     title: "ग्रामइन्फो",
@@ -104,7 +105,7 @@ const translations = {
     footer: "Build For Bharat Fellowship - 2026 Cohort (Engineering)",
     footerSubtext: "MVP By Aryan Chauhan",
     note: "टीप:",
-    noteText: "हा एक प्रात्यक्षिक डॅशबोर्ड आहे जो सिम्युलेटेड मनरेगा डेटा दर्शवितो. उत्पादनात, डेटा Data.gov.in ओपन API मधून मिळवला जाईल. CORS निर्बंधांमुळे सरकारी API ला सर्व्हर-साइड एकत्रीकरण आवश्यक आहे."
+    noteText: "हे डॅशबोर्ड आता वास्तविक मनरेगा डेटासाठी Data.gov.in ओपन API सह एकत्रित केले आहे. जेव्हा API अनुपलब्ध असते, तेव्हा सिम्युलेटेड डेटा फॉलबॅक म्हणून वापरला जातो. डेटा सरकारी स्त्रोतांकडून रिअल-टाइममध्ये मिळवला जातो."
   }
 };
 
@@ -174,19 +175,23 @@ const SummaryBanner = ({ t, district, state, data }) => {
   );
 };
 
-const DistrictSelector = ({ selectedState, selectedDistrict, onStateChange, onDistrictChange, t }) => {
+const DistrictSelector = ({ selectedState, selectedDistrict, onStateChange, onDistrictChange, availableStates, availableDistricts, apiConnected, t }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">{t.state}</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {t.state}
+            {apiConnected && <span className="text-green-600 text-xs ml-2">(Live Data)</span>}
+            {!apiConnected && <span className="text-orange-600 text-xs ml-2">(Demo Data)</span>}
+          </label>
           <select
             value={selectedState}
             onChange={(e) => onStateChange(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
           >
             <option value="">{t.selectState}</option>
-            {Object.keys(stateDistrictData).map(state => (
+            {availableStates.map(state => (
               <option key={state} value={state}>{state}</option>
             ))}
           </select>
@@ -201,7 +206,7 @@ const DistrictSelector = ({ selectedState, selectedDistrict, onStateChange, onDi
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100"
           >
             <option value="">{t.selectDistrict}</option>
-            {selectedState && stateDistrictData[selectedState].map(district => (
+            {availableDistricts.map(district => (
               <option key={district} value={district}>{district}</option>
             ))}
           </select>
@@ -365,22 +370,58 @@ const App = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [availableStates, setAvailableStates] = useState([]);
+  const [availableDistricts, setAvailableDistricts] = useState([]);
+  const [apiConnected, setApiConnected] = useState(false);
 
   const t = translations[language];
 
+  // Initialize API connection and load available states
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setSelectedState('Madhya Pradesh');
-          setSelectedDistrict('Bhopal');
-        },
-        (error) => {
-          console.log('Location detection failed:', error.message);
+    const initializeAPI = async () => {
+      try {
+        const connected = await dataGovService.testConnection();
+        setApiConnected(connected);
+        
+        if (connected) {
+          const states = await dataGovService.getAvailableStates();
+          setAvailableStates(states.length > 0 ? states : Object.keys(stateDistrictData));
+        } else {
+          // Fallback to hardcoded states if API is not available
+          setAvailableStates(Object.keys(stateDistrictData));
         }
-      );
-    }
+      } catch (error) {
+        console.error('Failed to initialize API:', error);
+        setAvailableStates(Object.keys(stateDistrictData));
+      }
+    };
+
+    initializeAPI();
   }, []);
+
+  // Load districts when state changes
+  useEffect(() => {
+    const loadDistricts = async () => {
+      if (!selectedState) {
+        setAvailableDistricts([]);
+        return;
+      }
+
+      try {
+        if (apiConnected) {
+          const districts = await dataGovService.getAvailableDistricts(selectedState);
+          setAvailableDistricts(districts.length > 0 ? districts : stateDistrictData[selectedState] || []);
+        } else {
+          setAvailableDistricts(stateDistrictData[selectedState] || []);
+        }
+      } catch (error) {
+        console.error('Failed to load districts:', error);
+        setAvailableDistricts(stateDistrictData[selectedState] || []);
+      }
+    };
+
+    loadDistricts();
+  }, [selectedState, apiConnected]);
 
   useEffect(() => {
     if (selectedState && selectedDistrict) {
@@ -392,15 +433,25 @@ const App = () => {
     setLoading(true);
     setError('');
     
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
     try {
-      const districtData = generateDistrictData(selectedState, selectedDistrict);
+      // Fetch real data from Data.gov.in API
+      const districtData = await dataGovService.fetchMGNREGAData(selectedState, selectedDistrict);
       setData(districtData);
       setError('');
     } catch (err) {
-      console.error('Error:', err);
+      console.error('Error fetching data:', err);
       setError(`Unable to load data: ${err.message}`);
+      
+      // Fallback to mock data if API fails
+      try {
+        console.log('Falling back to mock data...');
+        const mockData = generateDistrictData(selectedState, selectedDistrict);
+        setData(mockData);
+        setError('Using simulated data - API temporarily unavailable');
+      } catch (mockErr) {
+        console.error('Mock data generation failed:', mockErr);
+        setError('Unable to load any data. Please try again later.');
+      }
     } finally {
       setLoading(false);
     }
@@ -451,6 +502,9 @@ const App = () => {
           selectedDistrict={selectedDistrict}
           onStateChange={setSelectedState}
           onDistrictChange={setSelectedDistrict}
+          availableStates={availableStates}
+          availableDistricts={availableDistricts}
+          apiConnected={apiConnected}
           t={t}
         />
         
